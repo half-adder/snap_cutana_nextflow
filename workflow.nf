@@ -21,34 +21,23 @@ samples = channel.fromPath('../data/fastq/unzip/*.fastq')
 epitopes = channel.from(barcodes.keySet())
 barcode_alpha_idx = channel.from('A', 'B')
 
-barode_tuples = samples.combine(epitopes).combine(barcode_alpha_idx)
+barcode_tuples = samples.combine(epitopes).combine(barcode_alpha_idx)
 
 process countBarcodeReads {
     input:
     tuple path(sample_read), val(epitope), val(alpha_idx)
 
     output:
-    tuple val(epitope), val(alpha_idx), val('count'), emit: barcodeReadCounts
+    path('barcode_counts.txt')
+    // tuple val(epitope), val(alpha_idx), path('count'), emit: barcodeReadCounts
 
     script:
     """
-    grep -c ${barcodes[epitope][alpha_idx]} ${sample_read} > count
-    """
-}
-
-process reduceBarcodes {
-    input:
-    val barcodeReadCounts.collect() 
-
-    output:
-    file 'barcode_counts.txt'
-
-    script:
-    """
-    cat ${barcodeReadCounts} > barcode_counts.txt
+    count=\$(grep -c "${barcodes[epitope][alpha_idx]}" ${sample_read} || echo 0)
+    echo ${sample_read}, ${epitope}, ${alpha_idx}, \$count > barcode_counts.txt
     """
 }
 
 workflow {
-    countBarcodeReads(barode_tuples)
+    counts = countBarcodeReads(barcode_tuples).collectFile(name: 'barcode_counts.txt', newLine: false, sort: true, storeDir: 'results')
 }

@@ -1,2 +1,7 @@
 data/
 work/
+.nextflow/
+.nextflow.log*
+.DS_Store
+results/
+dag-*

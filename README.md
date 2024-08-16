@@ -2,11 +2,14 @@
 
 A [Nextflow](https://www.nextflow.io/) pipeline to aid in analyzing the SNAP-CUTANA panel from Epicypher for CUT&Tag and CUT&RUN experiments.
 
+## Requirements
+
+Nextflow must be [installed](https://www.nextflow.io/docs/latest/install.html). On Longleaf, just run `module load nextflow` before running the pipeline.
+
 ## Running the Workflow
 
-1. Ensure Nextflow is loaded in your environment. On Longleaf, run `module load nextflow`.
-2. Change the params file to point to the directory of reads you wish to analyze, and change the results directory if you wish.
-3. Run the following command: `nextflow run workflow.nf -params-file params.yaml`
+1. Change the params file to point to the directory of reads you wish to analyze, and change the results directory if you wish.
+2. Run the following command: `nextflow run workflow.nf -params-file params.yaml`
 
 ## Output
 

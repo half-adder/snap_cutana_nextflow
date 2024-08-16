@@ -1,1 +1,2 @@
-reads: 'data/fastq/unzip/*.fastq'
+reads: 'data/fastq/unzip/*OR*.fastq'
+results_dir: 'results/'
